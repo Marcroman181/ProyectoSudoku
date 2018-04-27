@@ -1,0 +1,203 @@
+package proyectosudocku;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
+public class Tablero {
+
+    private Casilla[][] casillas;
+    private JPanel panelSudoku;
+    private Joc juego;
+
+    public Tablero(Joc j){
+        
+        this.juego=j;
+        
+        panelSudoku = new JPanel();
+        this.panelSudoku.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        GridBagLayout gbl = new GridBagLayout();
+        this.panelSudoku.setLayout(gbl);
+    }
+    
+    public Tablero(Joc j, int[][] s) {
+        this.juego=j;
+        
+        casillas = new Casilla[9][9];
+        
+        panelSudoku = new JPanel();
+        this.panelSudoku.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        GridBagLayout gbl = new GridBagLayout();
+        this.panelSudoku.setLayout(gbl);
+        
+        rellenarTablero(s);
+    }
+
+    private void rellenarTablero(int[][] s) {
+
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        for (int row = 0; row < 9; row++) {
+
+            for (int col = 0; col < 9; col++) {
+
+                constraints = crearConstraint2(row, col);
+
+                if (s[row][col] != 0) {
+                    this.casillas[row][col] = new CasillaFija(s[row][col]);
+                    this.panelSudoku.add(((CasillaFija) this.casillas[row][col]).getValorLabel(), constraints);
+
+                } else {
+                    this.casillas[row][col] = new CasillaVariable(this);
+                    this.panelSudoku.add(((CasillaVariable) this.casillas[row][col]).getTextField(), constraints);
+                }
+
+            }
+        }
+    }
+
+    private GridBagConstraints crearConstraint2(int x, int y) {
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = x;
+        constraints.gridy = y;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        constraints.fill = GridBagConstraints.BOTH;
+        return constraints;
+    }
+
+    public boolean comprobarError() {
+
+        for (int row = 0; row < 9; row++) {
+            if (comprobarFila(row)) {
+                return true; //ERROR ======================>
+            }
+        }
+        for (int col = 0; col < 9; col++) {
+            if (comprobarColumna(col)) {
+                return true; //ERROR ======================>
+            }
+        }
+        for (int cuadricula = 0; cuadricula < 9; cuadricula++) {
+            if (comprobarCuadricula(cuadricula)) {
+                return true; //ERROR ======================>
+            }
+        }
+
+        return false; // NO ERROR
+    }
+
+    private boolean comprobarFila(int row) {
+
+        boolean[] apariciones = new boolean[9];
+
+        for (int j = 0; j < 9; j++) {
+            apariciones[j] = false;
+        }
+
+        for (int j = 0; j < 9; j++) {
+
+            if (this.casillas[row][j].getValor() != 0) {
+
+                if (apariciones[this.casillas[row][j].getValor() - 1]) {
+                    return true;// ERROR =====================================>
+                } else {
+                    apariciones[this.casillas[row][j].getValor() - 1] = true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean comprobarColumna(int col) {
+        boolean[] apariciones = new boolean[9];
+
+        for (int j = 0; j < 9; j++) {
+            apariciones[j] = false;
+        }
+
+        for (int j = 0; j < 9; j++) {
+
+            if (this.casillas[j][col].getValor() != 0) {
+
+                if (apariciones[this.casillas[j][col].getValor() - 1]) {
+                    return true;// ERROR =====================================>
+                } else {
+                    apariciones[this.casillas[j][col].getValor() - 1] = true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean comprobarCuadricula(int i) {
+
+        boolean[] apariciones = new boolean[9];
+        int row = ((i) / 3) * 3 + 1;
+        int col = ((i) % 3) * 3 + 1;
+
+        for (int j = 0; j < 9; j++) {
+            apariciones[j] = false;
+        }
+        for (int fila = row - 1; fila <= row + 1; fila++) {
+            for (int columna = col - 1; columna <= col + 1; columna++) {
+
+                if (this.casillas[fila][columna].getValor() != 0) {
+
+                    if (apariciones[this.casillas[fila][columna].getValor() - 1]) {
+
+                        return true;// ERROR =================================>
+                    } else {
+                        apariciones[this.casillas[fila][columna].getValor() - 1] = true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean comprobarLleno() {
+
+        for (int row = 0; row < 9; row++) {
+
+            for (int col = 0; col < 9; col++) {
+
+                if (this.casillas[row][col].getValor() == 0) {
+                    return false; // NO ESTA LLENO ============================>
+                }
+            }
+        }
+        return true; //LLENO
+    }
+    
+    public JPanel getPanel(){
+        return this.panelSudoku;
+    }
+    
+    public Casilla getCasilla(int row, int col){
+        return this.casillas[row][col];
+    }
+    
+    public Joc getJoc(){
+        return this.juego;
+    }
+}
+
+
+/*
+1,1 -->1      (1-1)/3)*3+1  , ((1-1)%3)*3+1           0
+1,4 --> 2       ,                                   1
+1,7 --> 3       ,                                   2g
+4,1 --> 4   (4-1/3)+1  ,    4%4*
+4,4 -->5
+4,7 --> 6
+7.1 --> 7
+7,4 --> 8
+7,7 --> 9
+ */
