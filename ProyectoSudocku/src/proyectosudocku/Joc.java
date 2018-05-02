@@ -3,9 +3,8 @@ package proyectosudocku;
 import java.awt.*;
 import javax.swing.*;
 
-public class Joc {
+public class Joc extends JFrame{
 
-    private JFrame f;
     private Tablero tablero;
     private Boton boton;
     private Semaforo semaforo;
@@ -13,20 +12,16 @@ public class Joc {
     public Joc() {
 
         //CONFIGURACION VENTANA
-        this.f = new JFrame("Sudoku");
-        this.f.setSize(800, 700);
-        this.f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super("Sudoku");
+        this.setSize(800, 700);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GridBagLayout layout = new GridBagLayout();
-        this.f.getContentPane().setLayout(layout); // Le ponemos el GridBagLayout
-        this.f.getContentPane().setBackground(Color.LIGHT_GRAY);
-
+        this.getContentPane().setLayout(layout); // Le ponemos el GridBagLayout
+        this.getContentPane().setBackground(Color.gray);
+       
         crearInterfaz();
 
-        this.f.setVisible(true);
-    }
-
-    public void iniciarJuego() {
-
+        this.setVisible(true);
     }
 
     public void reiniciarJuego() {
@@ -59,12 +54,12 @@ public class Joc {
         this.boton = new Boton(this);
         
         GridBagConstraints constraints = new GridBagConstraints();
-        constraints = crearConstraint(3, 1, 1, 1);
+        constraints = crearConstraint(3, 2, 1, 1);
         constraints.weightx = 0.0;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(20, 20, 20, 20);
-        this.f.getContentPane().add(this.boton.getBoton(), constraints);
+        this.getContentPane().add(this.boton, constraints);
 
     }
 
@@ -74,12 +69,12 @@ public class Joc {
 
         GridBagConstraints constraints = new GridBagConstraints();
 
-        constraints = crearConstraint(3, 2, 1, 1);
+        constraints = crearConstraint(3, 1, 1, 1);
         constraints.weightx = 0.0;
-        constraints.weighty = 1.0;
+        constraints.weighty = 0.8;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.insets = new Insets(20, 20, 20, 20);
-        this.f.getContentPane().add(this.semaforo.getSemafor(), constraints);
+        this.getContentPane().add(this.semaforo, constraints);
     }
 
     private void crearTablero() {
@@ -94,15 +89,16 @@ public class Joc {
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.insets = new Insets(10, 10, 10, 10);
-        this.f.getContentPane().add(this.tablero.getPanel(), constraints);
+        
+        this.getContentPane().add(this.tablero, constraints);
     }
 
     private void cambiarSudoku() {
         //borrar panel de la interfaz
-        this.f.getContentPane().remove(this.tablero.getPanel());
+        this.getContentPane().remove(this.tablero);
         //new tablero
         crearTablero();
-        this.f.setVisible(true);
+        this.setVisible(true);
     }
     
     public Semaforo getSemaforo(){

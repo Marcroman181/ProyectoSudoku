@@ -15,7 +15,7 @@ public class Sudoku {
     public Sudoku(){
         this.sudokus =new ArrayList<int[][]>();
         this.sudokuDado++;
-        this.sudokuDado=this.sudokuDado%2;
+        this.sudokuDado=this.sudokuDado%3;
         crearSudoku();
     }
     
@@ -91,11 +91,102 @@ public class Sudoku {
         int[][] sudoku2;
         sudoku2 = new int[9][9];
         
-        for(int i=0; i<9; i++){
-            for(int j=0; j<9; j++){
-               sudoku2[i][j]=7; 
-            }
-        }
+        sudoku2[2][0]=2;
+        sudoku2[3][0]=8;
+        sudoku2[5][0]=7;
+        sudoku2[7][0]=9;
+        
+        sudoku2[0][1]=1;
+        sudoku2[5][1]=3;
+        sudoku2[6][1]=7;
+        sudoku2[7][1]=6;
+        sudoku2[8][1]=8;
+        
+        sudoku2[2][2]=7;
+        sudoku2[4][2]=1;
+        sudoku2[5][2]=5;
+        sudoku2[6][2]=2;
+        sudoku2[7][2]=4;
+        sudoku2[8][2]=3;
+        
+        sudoku2[0][3]=2;
+        sudoku2[1][3]=1;
+        sudoku2[2][3]=4;
+        sudoku2[3][3]=3;
+        sudoku2[4][3]=8;
+        
+        sudoku2[2][4]=6;
+        sudoku2[3][4]=4;
+        sudoku2[4][4]=5;
+        sudoku2[7][4]=2;
+        
+        sudoku2[0][5]=5;
+        sudoku2[2][5]=8;
+        sudoku2[4][5]=6;
+        sudoku2[7][5]=1;
+        
+        sudoku2[1][6]=5;
+        sudoku2[4][6]=2;
+        sudoku2[5][6]=4;
+        sudoku2[6][6]=6;
+        sudoku2[7][6]=8;
+        
+        sudoku2[0][7]=8;
+        sudoku2[1][7]=2;
+        sudoku2[2][7]=9;
+        sudoku2[4][7]=3;
+        sudoku2[8][7]=7;
+        
+        sudoku2[1][8]=6;
+        sudoku2[4][8]=7;
+        sudoku2[5][8]=8;
+        sudoku2[8][8]=2;
+        
         this.sudokus.add(sudoku2); 
+    
+        int[][] sudoku3;
+        sudoku3 = new int[9][9];
+        
+        sudoku3[0][0]=2;
+        sudoku3[1][0]=3;
+        sudoku3[2][0]=5;
+        sudoku3[3][0]=4;
+        sudoku3[4][0]=6;
+        
+        sudoku3[2][1]=4;
+        sudoku3[5][1]=2;
+        sudoku3[7][1]=3;
+        
+        sudoku3[0][2]=7;
+        sudoku3[1][2]=9;
+        
+        sudoku3[0][3]=3;
+        sudoku3[4][3]=9;
+        sudoku3[5][3]=6;
+        sudoku3[7][3]=1;
+        
+        sudoku3[0][4]=9;
+        sudoku3[3][4]=1;
+        sudoku3[6][4]=2;
+        sudoku3[7][4]=6;
+        
+        sudoku3[5][5]=4;
+        sudoku3[6][5]=5;
+        
+        sudoku3[0][6]=1;
+        sudoku3[1][6]=7;
+        sudoku3[2][6]=9;
+        sudoku3[4][6]=8;
+        sudoku3[7][6]=2;
+       
+        sudoku3[2][7]=8;
+       
+        sudoku3[0][8]=5;
+        sudoku3[1][8]=6;
+        sudoku3[5][8]=1;
+        sudoku3[8][8]=9;
+        
+        this.sudokus.add(sudoku3); 
+   
     }
 }

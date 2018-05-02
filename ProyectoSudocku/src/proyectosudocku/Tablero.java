@@ -1,5 +1,6 @@
 package proyectosudocku;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
@@ -7,31 +8,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class Tablero {
+public class Tablero extends JPanel {
 
     private Casilla[][] casillas;
-    private JPanel panelSudoku;
     private Joc juego;
 
     public Tablero(Joc j){
-        
+        super();
         this.juego=j;
         
-        panelSudoku = new JPanel();
-        this.panelSudoku.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        this.setBorder(BorderFactory.createMatteBorder(10, 2, 2, 2, Color.BLACK));
         GridBagLayout gbl = new GridBagLayout();
-        this.panelSudoku.setLayout(gbl);
+        this.setLayout(gbl);
     }
     
     public Tablero(Joc j, int[][] s) {
+        super();
         this.juego=j;
         
         casillas = new Casilla[9][9];
         
-        panelSudoku = new JPanel();
-        this.panelSudoku.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        this.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
         GridBagLayout gbl = new GridBagLayout();
-        this.panelSudoku.setLayout(gbl);
+        this.setLayout(gbl);
         
         rellenarTablero(s);
     }
@@ -39,20 +38,23 @@ public class Tablero {
     private void rellenarTablero(int[][] s) {
 
         GridBagConstraints constraints = new GridBagConstraints();
-
+        int cuadricula;
+        
         for (int row = 0; row < 9; row++) {
 
             for (int col = 0; col < 9; col++) {
 
                 constraints = crearConstraint2(row, col);
-
+                
+                cuadricula = (col/3+1)+(row/3)*3;
+                
                 if (s[row][col] != 0) {
-                    this.casillas[row][col] = new CasillaFija(s[row][col]);
-                    this.panelSudoku.add(((CasillaFija) this.casillas[row][col]).getValorLabel(), constraints);
+                    this.casillas[row][col] = new CasillaFija(s[row][col], cuadricula);
+                    this.add(((CasillaFija) this.casillas[row][col]).getValorLabel(), constraints);
 
                 } else {
-                    this.casillas[row][col] = new CasillaVariable(this);
-                    this.panelSudoku.add(((CasillaVariable) this.casillas[row][col]).getTextField(), constraints);
+                    this.casillas[row][col] = new CasillaVariable(this, cuadricula);
+                    this.add(((CasillaVariable) this.casillas[row][col]).getTextField(), constraints);
                 }
 
             }
@@ -176,10 +178,6 @@ public class Tablero {
         return true; //LLENO
     }
     
-    public JPanel getPanel(){
-        return this.panelSudoku;
-    }
-    
     public Casilla getCasilla(int row, int col){
         return this.casillas[row][col];
     }
@@ -188,16 +186,3 @@ public class Tablero {
         return this.juego;
     }
 }
-
-
-/*
-1,1 -->1      (1-1)/3)*3+1  , ((1-1)%3)*3+1           0
-1,4 --> 2       ,                                   1
-1,7 --> 3       ,                                   2g
-4,1 --> 4   (4-1/3)+1  ,    4%4*
-4,4 -->5
-4,7 --> 6
-7.1 --> 7
-7,4 --> 8
-7,7 --> 9
- */
